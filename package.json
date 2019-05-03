@@ -1,0 +1,86 @@
+{
+	"name": "@romain-bourjot/rlogger",
+	"description": "Easy and type-safe logger that ensures a standard log output.",
+	"version": "1.0.0",
+	"main": "dist/index.js",
+	"files": [
+		"dist",
+		"src",
+		"index.js.flow"
+	],
+	"keywords": [
+		"log",
+		"logger",
+		"type",
+		"safe"
+	],
+	"license": "CECILL-C",
+	"publishConfig": {
+		"access": "public"
+	},
+	"author": {
+		"name": "Romain Bourjot",
+		"url": "https://github.com/romain-bourjot",
+		"email": "romain.bourjot+npm@gmail.com"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/romain-bourjot/rlogger.git"
+	},
+	"homepage": "https://github.com/romain-bourjot/rlogger#readme",
+	"bugs": {
+		"url": "https://github.com/romain-bourjot/rlogger/issues"
+	},
+	"scripts": {
+		"lint": "eslint src",
+		"flow": "flow check",
+		"test": "mocha --check-leaks --require @babel/register __tests__",
+		"coverage": "nyc mocha --require @babel/register __tests__",
+		"prepublishOnly": "npm run build",
+		"watch": "nodemon src/index.js -L --exec babel-node",
+		"build:compile": "ncc build ./dist/temp/index.js -o dist -m -C",
+		"build:transpile": "babel src -d dist/temp",
+		"build": "rimraf ./dist && npm run build:transpile && npm run build:compile && rimraf ./dist/temp",
+		"test:mutation": "stryker run"
+	},
+	"husky": {
+		"hooks": {
+			"pre-commit": "npm run lint && npm run flow && npm run test"
+		}
+	},
+	"engines": {
+		"node": ">=8.10"
+	},
+	"dependencies": {
+		"@babel/runtime": "^7.4.4"
+	},
+	"devDependencies": {
+		"@babel/cli": "^7.4.4",
+		"@babel/core": "^7.4.4",
+		"@babel/node": "^7.2.2",
+		"@babel/plugin-transform-flow-strip-types": "^7.4.4",
+		"@babel/plugin-transform-runtime": "^7.4.4",
+		"@babel/preset-env": "^7.4.4",
+		"@babel/register": "^7.4.4",
+		"@stryker-mutator/babel-transpiler": "^1.3.1",
+		"@stryker-mutator/core": "^1.3.1",
+		"@stryker-mutator/javascript-mutator": "^1.3.1",
+		"@stryker-mutator/mocha-framework": "^1.3.1",
+		"@stryker-mutator/mocha-runner": "^1.3.1",
+		"@zeit/ncc": "^0.18.2",
+		"babel-eslint": "^10.0.1",
+		"babel-plugin-minify-mangle-names": "^0.5.0",
+		"babel-plugin-module-resolver": "^3.2.0",
+		"chai": "^4.2.0",
+		"eslint": "^5.16.0",
+		"eslint-plugin-flowtype": "^3.7.0",
+		"flow": "^0.2.3",
+		"flow-bin": "^0.98.0",
+		"husky": "^2.2.0",
+		"mocha": "^5.2.0",
+		"nodemon": "^1.19.0",
+		"nyc": "^14.1.0",
+		"rimraf": "^2.6.3",
+		"sinon": "^7.3.2"
+	}
+}
