@@ -10,7 +10,6 @@ jobs:
     <<: *defaults
     steps:
       - checkout
-
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
@@ -26,15 +25,22 @@ jobs:
       - run:
           name: Run tests
           command: npm test
-
       - save_cache:
           paths:
             - node_modules
           key: v1-dependencies-{{ checksum "package.json" }}
-
       - persist_to_workspace:
           root: ~/rlogger
           paths: .
+
+  coverage:
+      <<: *defaults
+      steps:
+        - attach_workspace:
+            at: ~/rlogger
+        - run: npm run coverage
+        - store_artifacts:
+            path: coverage
 
   deploy:
       <<: *defaults
@@ -53,9 +59,13 @@ workflows:
   test-deploy:
     jobs:
       - test
+      - coverage:
+          context: node-package
       - deploy:
+          context: node-package
           requires:
             - test
+            - coverage
           filters:
             branches:
               only: master
