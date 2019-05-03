@@ -6,17 +6,30 @@ defaults: &defaults
     - image: circleci/node:8.10
 
 jobs:
-  test:
+  install:
     <<: *defaults
     steps:
       - checkout
-
       - restore_cache:
           keys:
             - v1-dependencies-{{ checksum "package.json" }}
             - v1-dependencies-
-
       - run: npm install
+      - save_cache:
+          paths:
+            - node_modules
+          key: v1-dependencies-{{ checksum "package.json" }}
+      - persist_to_workspace:
+          root: ~/rlogger
+          paths: .
+
+  test:
+    <<: *defaults
+    environment:
+      NODE_ENV: test
+    steps:
+      - attach_workspace:
+            at: ~/rlogger
       - run:
           name: Run linter
           command: npm run lint
@@ -27,14 +40,17 @@ jobs:
           name: Run tests
           command: npm test
 
-      - save_cache:
-          paths:
-            - node_modules
-          key: v1-dependencies-{{ checksum "package.json" }}
-
-      - persist_to_workspace:
-          root: ~/rlogger
-          paths: .
+  coverage:
+      <<: *defaults
+      environment:
+        NODE_ENV: test
+      steps:
+        - attach_workspace:
+            at: ~/rlogger
+        - run: npm run coverage
+        - run: npm run coverage:ci
+        - store_artifacts:
+            path: coverage
 
   deploy:
       <<: *defaults
@@ -52,8 +68,19 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - test
+      - install
+      - test:
+          requires:
+            - install
+      - coverage:
+          context: node-package
+          requires:
+            - install
+          filters:
+            branches:
+              only: master
       - deploy:
+          context: node-package
           requires:
             - test
           filters:
