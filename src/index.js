@@ -3,11 +3,14 @@
 import {format} from 'rlogger/formatter';
 
 const LOG_LEVELS = {
-	fatal: 0,
-	error: 1,
-	warn: 2,
-	info: 3,
-	debug: 4
+	emerg: 0,
+	alert: 1,
+	crit: 2,
+	err: 3,
+	warning: 4,
+	notice: 5,
+	info: 6,
+	debug: 7
 };
 
 type LogLevel = typeof LOG_LEVELS;
