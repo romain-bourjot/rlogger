@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  node:
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+    container_name: rlogger.node
+    volumes:
+      - ./src/:/var/www/src
+      - ./__tests__/:/var/www/__tests__

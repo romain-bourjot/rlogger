@@ -42,11 +42,12 @@
 		"build:compile": "ncc build ./dist/temp/index.js -o dist -m -C",
 		"build:transpile": "babel src -d dist/temp",
 		"build": "rimraf ./dist && npm run build:transpile && npm run build:compile && rimraf ./dist/temp",
-		"test:mutation": "stryker run"
+		"test:mutation": "stryker run",
+		"beforecommit": "npm run lint && npm run flow && npm run test"
 	},
 	"husky": {
 		"hooks": {
-			"pre-commit": "npm run lint && npm run flow && npm run test"
+			"pre-commit": "docker-compose build && docker-compose run node npm run beforecommit"
 		}
 	},
 	"engines": {
