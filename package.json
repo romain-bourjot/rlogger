@@ -35,7 +35,7 @@
 		"lint": "eslint src",
 		"flow": "flow check",
 		"test": "mocha --check-leaks --require @babel/register __tests__",
-		"coverage:local": "nyc --reporter=html --report-dir=coverage mocha --require @babel/register __tests__",
+		"coverage": "nyc --reporter=html --report-dir=coverage mocha --require @babel/register __tests__",
 		"coverage:ci": "nyc report --reporter=text-lcov mocha --require @babel/register __tests__ | coveralls",
 		"prepublishOnly": "npm run build",
 		"watch": "nodemon src/index.js -L --exec babel-node",
