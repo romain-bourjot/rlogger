@@ -35,7 +35,7 @@
 		"lint": "eslint src",
 		"flow": "flow check",
 		"test": "mocha --check-leaks --require @babel/register __tests__",
-		"coverage": "nyc mocha --require @babel/register __tests__",
+		"coverage": "nyc --reporter=lcov --report-dir=coverage mocha --require @babel/register __tests__",
 		"prepublishOnly": "npm run build",
 		"watch": "nodemon src/index.js -L --exec babel-node",
 		"build:compile": "ncc build ./dist/temp/index.js -o dist -m -C",
