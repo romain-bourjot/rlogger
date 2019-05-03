@@ -43,7 +43,7 @@ jobs:
       steps:
         - attach_workspace:
             at: ~/rlogger
-        - run: npm run coverage
+        - run: npm run coverage:ci
         - store_artifacts:
             path: coverage
 
@@ -67,10 +67,14 @@ workflows:
       - test:
           requires:
             - install
+          environment:
+            NODE_ENV: test
       - coverage:
           context: node-package
           requires:
             - install
+          environment:
+            NODE_ENV: test
       - deploy:
           context: node-package
           requires:
