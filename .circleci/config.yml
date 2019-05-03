@@ -75,6 +75,9 @@ workflows:
           context: node-package
           requires:
             - install
+          filters:
+            branches:
+              only: master
       - deploy:
           context: node-package
           requires:
