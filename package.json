@@ -1,7 +1,7 @@
 {
 	"name": "@romain-bourjot/rlogger",
 	"description": "Easy and type-safe logger that ensures a standard log output.",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"main": "dist/index.js",
 	"files": [
 		"dist",
