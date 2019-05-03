@@ -63,14 +63,18 @@ workflows:
   version: 2
   test-deploy:
     jobs:
-      - test
+      - install
+      - test:
+          requires:
+            - install
       - coverage:
           context: node-package
+          requires:
+            - install
       - deploy:
           context: node-package
           requires:
             - test
-            - coverage
           filters:
             branches:
               only: master
